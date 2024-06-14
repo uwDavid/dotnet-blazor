@@ -1,2 +1,1 @@
-# dotnet-blazor
-.NET 8 Blazor Tutorial
+# .NET 8 Blazor Tutorial
