@@ -1,3 +1,37 @@
-@page "/servers/edit"
+@page "/servers/{id:int}"
 
 <h1>Edit Server</h1>
+<br />
+@Id
+
+@if (server != null)
+{
+    <p>@server.Name</p>
+    <p>@server.City</p>
+    <p>@server.IsOnline</p>
+}
+<br />
+<a href="/servers" class="btn btn-primary">Close</a>
+
+@code
+{
+    // use :int syntax above to add route constraint
+
+    [Parameter]
+    public int Id { get; set; }
+    // for route pamater, there is case insensitive match
+
+    private Server? server;
+
+    // to use the Id parameter to obtain server info
+    // when parameter value is received ->lifecycle event is triggered: OnParametersSet(),OnParametersSetAsync()
+    protected override void OnParametersSet()
+    {
+        // base.OnParametersSet();
+        // not necessary to call this base class method
+
+        // In this event, Id variable is guaranteed to be loaded
+        // we retrieve the server obj => pass value into server variable
+        server = ServersRepository.GetServerById(this.Id);
+    }
+}
