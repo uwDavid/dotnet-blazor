@@ -13,9 +13,14 @@
         @foreach (var city in cities)
         {
             <div class="col">
-                <button type="button" class="btn btn-primary">
-                    @city
-                </button>
+                <div class="card">
+                    <img src="@($"/images/{city}.jpeg")" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary">
+                            @city
+                        </button>
+                    </div>
+                </div>
             </div>
         }
     </div>
@@ -31,6 +36,8 @@
             <span style="color:@((server.IsOnline?"green":"red"))">
                 @(server.IsOnline ? "online" : "offline")
             </span>
+            &nbsp;
+            <a href="/servers/edit" class="btn btn-link">Edit</a>
         </li>
     }
 </ul>
