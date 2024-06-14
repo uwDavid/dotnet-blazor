@@ -2,8 +2,14 @@
 
 <h1>Edit Server</h1>
 <br />
+<div>
+    Use Param Example:
+</div>
 @Id
 
+<div>
+    OnParameterSet() event, retrieve server info using server Id:
+</div>
 @if (server != null)
 {
     <p>@server.Name</p>
@@ -11,7 +17,44 @@
     <p>@server.IsOnline</p>
 }
 <br />
-<a href="/servers" class="btn btn-primary">Close</a>
+
+<div>
+    Form Example:
+</div>
+@if (server != null)
+{
+    <EditForm Model="server" FormName="formServer" OnSubmit="Submit">
+    <InputNumber @bind-Value="server.ServerId" hidden></InputNumber>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Name</label>
+        </div>
+        <div class="col-6">
+            <InputText @bind-Value="server.Name" class="form-control"></InputText>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">City</label>
+        </div>
+        <div class="col-6">
+            <InputText @bind-Value="server.City" class="form-control"></InputText>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Online</label>
+        </div>
+        <div class="col-6">
+            <InputCheckbox @bind-Value="server.IsOnline" class="form-check-input"></InputCheckbox>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Update</button>
+    &nbsp;
+    <a href="/servers" class="btn btn-primary">Close</a>
+</EditForm>
+}
+
 
 @code
 {
@@ -21,7 +64,9 @@
     public int Id { get; set; }
     // for route pamater, there is case insensitive match
 
-    private Server? server;
+    // private Server? server;
+    [SupplyParameterFromForm(FormName = "formServer")]
+    private Server? server { get; set; }
 
     // to use the Id parameter to obtain server info
     // when parameter value is received ->lifecycle event is triggered: OnParametersSet(),OnParametersSetAsync()
@@ -32,6 +77,16 @@
 
         // In this event, Id variable is guaranteed to be loaded
         // we retrieve the server obj => pass value into server variable
-        server = ServersRepository.GetServerById(this.Id);
+        server ??= ServersRepository.GetServerById(this.Id);
+        // ??= means that we only call this if server is null
+    }
+
+    // Form submission function
+    private void Submit()
+    {
+        if (server is not null)
+        {
+            ServersRepository.UpdateServer(server.ServerId, server);
+        }
     }
 }
