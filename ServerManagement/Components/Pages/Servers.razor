@@ -1,5 +1,6 @@
 @page "/servers"
 
+@inject NavigationManager NavigationManager
 
 <h3>Servers</h3>
 <br />
@@ -38,10 +39,31 @@
             </span>
             &nbsp;
             <a href="/servers/@server.ServerId" class="btn btn-link">Edit</a>
+            &nbsp;
+            <EditForm Model="server" FormName="@($"form-server-{server.ServerId}")"
+                OnValidSubmit="@(() => {DeleteServer(server.ServerId);})">
+                <button class="btn btn-primary" type="submit">Delete</button>
+            </EditForm>
         </li>
     }
 </ul>
+<p>
+    <a href="/servers/add" class="btn btn-primary">Add Server</a>
+</p>
 @code {
     private List<Server> servers = ServersRepository.GetServersByCity("Toronto");
     private List<string> cities = CitiesRepository.GetCities();
+
+    // in Blazor SSR, there's no javascript
+    // thus to delete an item, we have to post the request in a form submission
+    private void DeleteServer(int serverId)
+    {
+        if (serverId > 0)
+        {
+            ServersRepository.DeleteServer(serverId);
+            // NavigationManager.Refresh();
+            // Refresh() isn't working at this time
+            NavigationManager.NavigateTo("/servers");
+        }
+    }
 }
