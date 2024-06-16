@@ -25,6 +25,9 @@
     // we hide the server infomation in hidden fields, so that form submits the value back to the server object
     // which is bound via [SupplyParameterFromForm]
     // Then ChangeServerStatus() on submit toggles the server status
+
+    // For enhanced form interactivity in SSR
+    // just need to add the Enhance="true" attribute in EditForm
     [SupplyParameterFromForm]
     private Server? server { get; set; }
 
