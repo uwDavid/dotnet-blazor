@@ -39,7 +39,8 @@ Selected city is: @selectedCity
 <br />
 <h3>Data Binding Example for Search Bar</h3>
 <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Search Servers" @bind-value="serverFilter" />
+    <input type="text" class="form-control" placeholder="Search Servers" @bind-value="serverFilter"
+        @bind-value:event="oninput" />
     <button class="btn btn-outline-secondary" type="button" id="button-search" @onclick="HandleSearch">Search</button>
 </div>
 <br />
@@ -95,7 +96,17 @@ Selected city is: @selectedCity
     }
 
     // search bar - to demo onchange event
-    private string serverFilter { get; set; } = "";
+    private string _serverFilter = "";
+    private string serverFilter
+    {
+        get => _serverFilter;
+        set
+        {
+            _serverFilter = value;
+            // here is were we intercept the setter
+            this.servers = ServersRepository.SearchServers(serverFilter);
+        }
+    }
     private void HandleServerFilterChange(ChangeEventArgs args)
     {
         // args contain the value that changed
