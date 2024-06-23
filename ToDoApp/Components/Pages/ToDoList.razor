@@ -1,0 +1,38 @@
+@page "/todolist"
+
+@rendermode InteractiveServer // add page interactive render
+
+<h3>To Do</h3>
+<br />
+
+<button type="button" class="btn btn-primary" @onclick="AddTask">
+    Add Task
+</button>
+<br />
+
+@if (items != null && items.Count > 0)
+{
+    <ul>
+    @foreach (var item in items)
+        {
+            <li @key="item.Id">@item.Name</li>
+        }
+    </ul>
+}
+
+@code {
+    // State var to display list of to do items
+    private List<ToDoItem> items = ToDoItemsRepository.GetItems();
+
+    // Add task feature
+    // 1- we have to add interactivity to page
+    // 2- make the items var reload on adding item
+    private void AddTask()
+    {
+        ToDoItemsRepository.AddItem(new ToDoItem { Name = "New Task" });
+        items = ToDoItemsRepository.GetItems(); // reload items list
+    }
+
+    // Edit task name feature
+    // 1 - change the li item from @item.Name to input box
+}
