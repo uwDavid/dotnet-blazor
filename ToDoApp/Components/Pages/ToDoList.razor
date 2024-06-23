@@ -9,15 +9,37 @@
     Add Task
 </button>
 <br />
+<br />
 
 @if (items != null && items.Count > 0)
 {
-    <ul>
+    <ul class="list-unstyled">
     @foreach (var item in items)
         {
             <li @key="item.Id">
-                <div class="mb-2">
-                    <input type="text" class="form-control border-0" @bind-value="item.Name" />
+                <div class="row mb-2">
+                    <div class="col-1" style="width: 30px">
+                        <input type="checkbox" style="vertical-align:middle" class="form-check-input"
+                            @bind-value="item.IsCompleted" checked="@item.IsCompleted" />
+                    </div>
+                    <div class="col">
+                        @if (item.IsCompleted)
+                        {
+                            <input type="text" style="vertical-align: middle;"
+                                class="form-control border-0 text-decoration-line-through" @bind-value="item.Name" disabled />
+                        }
+                        else
+                        {
+                            <input type="text" style="vertical-align: middle;" class="form-control border-0"
+                                @bind-value="item.Name" />
+                        }
+                    </div>
+                    <div class="col">
+                        @if (item.IsCompleted)
+                        {
+                            <text>Completed at: @item.DateCompleted.ToLongDateString()</text>
+                        }
+                    </div>
                 </div>
             </li>
         }
@@ -43,5 +65,17 @@
 
     // Mark task as completed feature
     // 1 - add a checkbox
-    // 2 -
+    // 2 - display IsCompleted and DateCompleted properties
+    // we use the "row" class from bootstrap, and have 3 columns in our div
+    // checkbox, task name input box, and date completed
+    // for date completed, inside the if() statement, to enter text we used <text> tag
+
+    // css tricks
+    // to remove bullet points, ul class = list-unstyled
+    // to specify width of columns: use style="width:30px"
+
+    // with 2-way data binding @bind-value => we cannot add @onchange
+    // to use this, we need to:
+    // 1 - declare a private field
+    // 2 - define custom getter/setters for public property
 }
