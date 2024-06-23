@@ -15,7 +15,11 @@
     <ul>
     @foreach (var item in items)
         {
-            <li @key="item.Id">@item.Name</li>
+            <li @key="item.Id">
+                <div class="mb-2">
+                    <input type="text" class="form-control border-0" @bind-value="item.Name" />
+                </div>
+            </li>
         }
     </ul>
 }
@@ -35,4 +39,9 @@
 
     // Edit task name feature
     // 1 - change the li item from @item.Name to input box
+    // 2 - use 2-way data binding via @bind-value
+
+    // Mark task as completed feature
+    // 1 - add a checkbox
+    // 2 -
 }
