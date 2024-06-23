@@ -4,16 +4,7 @@
     <div class="row w-50">
         @foreach (var city in cities)
             {
-                <div class="col">
-                    <div class="card @(selectedCity.Equals(city, StringComparison.OrdinalIgnoreCase)?"border-primary":"")">
-                        <img src="@($"/images/{city}.jpeg")" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <button type="button" class="btn btn-primary" @onclick="@(()=>{ SelectCity(city); })">
-                                @city
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <CityComponent city="@city" selectedCity="@selectedCity"></CityComponent>
             }
         </div>
     </div>
