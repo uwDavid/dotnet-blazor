@@ -1,23 +1,8 @@
-@inject NavigationManager NavigationManager
-
 @if (this.servers != null && this.servers.Count > 0)
 {
     <ul>
     <Virtualize Items="this.servers" Context="server">
-        <li @key="server.ServerId">
-            @server.Name in @server.City is
-            <span style="color:@((server.IsOnline?"green":"red"))">
-                @(server.IsOnline ? "online" : "offline")
-            </span>
-            &nbsp;
-            <a href="/servers/@server.ServerId" class="btn btn-link">Edit</a>
-            &nbsp;
-            <EditForm Model="server" FormName="@($"form-server-{server.ServerId}")"
-                OnValidSubmit="@(() => {DeleteServer(server.ServerId);})">
-                <button class="btn btn-primary" type="submit">Delete</button>
-            </EditForm>
-        </li>
-
+        <ServerComponent Server="server"></ServerComponent>
     </Virtualize>
 </ul>
 }
@@ -35,22 +20,5 @@
         // base.OnParametersSet(); - this isn't necessary
         servers = ServersRepository.GetServersByCity(CityName ?? "Toronto");
         // if CityName is null, load Toronto
-    }
-
-    private void DeleteServer(int serverId)
-    {
-        if (serverId > 0)
-        {
-            ServersRepository.DeleteServer(serverId);
-            // NavigationManager.Refresh();
-            // Refresh() isn't working at this time
-            // So we use .NavigateTo() to refresh the page
-            // NavigationManager.NavigateTo("/servers");
-
-            // but when we move this into a component, interactivity is broken
-            NavigationManager.NavigateTo("/servers", true);
-            // true => forces the page to reload
-            // this is a temporary solution
-        }
     }
 }
