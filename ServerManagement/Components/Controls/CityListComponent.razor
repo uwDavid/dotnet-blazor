@@ -4,7 +4,8 @@
     <div class="row w-50">
         @foreach (var city in cities)
             {
-                <CityComponent city="@city" selectedCity="@selectedCity"></CityComponent>
+                <CityComponent city="@city" selectedCity="@selectedCity" SelectCityCallback="HandleCitySelection">
+                </CityComponent>
             }
         </div>
     </div>
@@ -16,9 +17,20 @@
     // select city
     private string selectedCity = "Toronto";
 
-    private void SelectCity(string cityName)
+    // this method is linked to the callback
+    // if child component triggers callback -> this method will be triggered
+    private void HandleCitySelection(string cityName) // this arg matches the Callback<string> signature
     {
-        this.selectedCity = cityName;
+        selectedCity = cityName;
+
+        // trigger event callback to Server page here
+        SelectCityCallback.InvokeAsync(cityName);
     }
+
+    // Pass selected city arg to Server page
+    // 1- create an EventCallback
+    // 2- create a handle method and register it to the EventCallback in Server page
+    [Parameter]
+    public EventCallback<string> SelectCityCallback { get; set; }
 
 }
