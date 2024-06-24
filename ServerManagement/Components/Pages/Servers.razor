@@ -13,16 +13,11 @@
 <br />`
 <CityListComponent SelectCityCallback="HandleCitySelection"></CityListComponent>
 <br />
-<div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Search Servers" @bind-value="serverFilter"
-        @bind-value:event="oninput" />
-    <button class="btn btn-outline-secondary" type="button" id="button-search" @onclick="HandleSearch">Search</button>
-</div>
-<br />
-<h4>Server Filter: @serverFilter</h4>
+<SearchBarComponent ServerFilterCallback="HandleSearchFilter"></SearchBarComponent>
 <br />
 <h3>List of Servers in City:</h3>
-<ServerListComponent @rendermode="InteractiveServer" CityName="@this.selectedCity"></ServerListComponent>
+<ServerListComponent @rendermode="InteractiveServer" CityName="@this.selectedCity" SearchFilter="@this.searchFilter">
+</ServerListComponent>
 @* <ServerListComponent @rendermode="InteractiveServer" CityName="@this.selectedCity"></ServerListComponent> *@
 <p>
     <a href="/servers/add" class="btn btn-primary">Add Server</a>
@@ -34,37 +29,24 @@
     // passed onto the ServerList component as a param
     private string selectedCity = "Toronto";
 
-    // search bar - to demo onchange event
-    private string _serverFilter = "";
-    private string serverFilter
-    {
-        get => _serverFilter;
-        set
-        {
-            _serverFilter = value;
-            // here is were we intercept the setter
-            // this.servers = ServersRepository.SearchServers(serverFilter);
-        }
-    }
-    private void HandleServerFilterChange(ChangeEventArgs args)
-    {
-        // args contain the value that changed
-        // serverFilter = args.Value?.ToString() ?? string.Empty;
-
-        Console.WriteLine("onChange event implementation of search bar");
-    }
-
-    private void HandleSearch()
-    {
-        //this.servers = ServersRepository.SearchServers(serverFilter);
-        //this.selectedCity = string.Empty;
-        // doesn't make sense to keep the card highlighted
-
-    }
-
     // SelectCity Callback Handler
     private void HandleCitySelection(string cityName) // this arg matches the Callback<string> signature
     {
         selectedCity = cityName;
+        this.searchFilter = string.Empty; // when selecting city after search bar is used, list will render properly
+    }
+
+    // Search Handler
+    private string searchFilter = "";
+    private void HandleSearchFilter(string serverFilter)
+    {
+        // this.servers = ServersRepository.SearchServers(serverFilter);
+        // this.selectedCity = string.Empty;
+
+        // the server list is in a different component => thus we need to pass this filter value to server list component
+        // 1- add a component param in Server List component
+        // 2 - pass in the filter from this component here
+        this.searchFilter = serverFilter;
+
     }
 }

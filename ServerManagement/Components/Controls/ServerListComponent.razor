@@ -12,13 +12,24 @@
     [Parameter]
     public string? CityName { get; set; }
 
+    // to handle search filter
+    [Parameter]
+    public string SearchFilter { get; set; } = "";
+
     // private List<Server> servers = ServersRepository.GetServersByCity("Toronto");
     // we need to ensure we receive info from parent component
     private List<Server>? servers;
     protected override void OnParametersSet()
     {
-        // base.OnParametersSet(); - this isn't necessary
-        servers = ServersRepository.GetServersByCity(CityName ?? "Toronto");
-        // if CityName is null, load Toronto
+        if (string.IsNullOrWhiteSpace(this.SearchFilter))
+        {
+            // base.OnParametersSet(); - this isn't necessary
+            // if CityName is null, load Toronto
+            servers = ServersRepository.GetServersByCity(CityName ?? "Toronto");
+        }
+        else
+        {
+            servers = ServersRepository.SearchServers(SearchFilter);
+        }
     }
 }

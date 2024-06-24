@@ -1,0 +1,21 @@
+<div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Search Servers" @bind-value="serverFilter"
+        @bind-value:event="oninput" />
+    <button class="btn btn-outline-secondary" type="button" id="button-search" @onclick="HandleSearch">Search</button>
+</div>
+<div>
+    Displaying Search Filter: @serverFilter
+</div>
+
+@code {
+    // search bar - to demo onchange event
+    private string serverFilter = "";
+
+    [Parameter]
+    public EventCallback<string> ServerFilterCallback { get; set; }
+
+    private void HandleSearch()
+    {
+        ServerFilterCallback.InvokeAsync(serverFilter);
+    }
+}
