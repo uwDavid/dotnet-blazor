@@ -2,19 +2,47 @@
 
 @if (Server != null)
 {
-    <li @key="Server.ServerId">
+    <li @key="Server.ServerId" style="background-color: @GetBackgroundColor()">
     @Server.Name in @Server.City is
     <span style="color:@((Server.IsOnline?"green":"red"))">
         @(Server.IsOnline ? "online" : "offline")
     </span>
     &nbsp;
-    <a href="/Servers/@Server.ServerId" class="btn btn-link">Edit</a>
-    &nbsp;
-    <EditForm Model="Server" FormName="@($"form-Server-{Server.ServerId}")"
-        OnValidSubmit="@(() => {DeleteServer(Server.ServerId);})">
-        <button class="btn btn-primary" type="submit">Delete</button>
-    </EditForm>
-</li>
+
+    @if (Server.IsOnline)
+        {
+
+            <button type="button" class="btn btn-outline-danger" @onclick="@(()=> {Server.IsOnline = false;})">Turn Off</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-outline-success" @onclick="@(()=> {Server.IsOnline = true;})">Turn On</button>
+        }
+        &nbsp;
+        @if (Server.IsOnline)
+        {
+            Random random = new Random();
+            int randomNumber = random.Next(0, 500);
+            <text>@randomNumber</text>
+        }
+        else
+        {
+            <text>N/A</text>
+        }
+        &nbsp;
+        <button type="button" class="btn btn-link" @onclick="@(()=> {this.editServer = !this.editServer;})">Edit</button>
+        &nbsp;
+        <EditForm Model="Server" FormName="@($"form-Server-{Server.ServerId}")"
+            OnValidSubmit="@(() => {DeleteServer(Server.ServerId);})">
+            <button class="btn btn-primary" type="submit">Delete</button>
+        </EditForm>
+
+        @if (editServer)
+        {
+            <ServerManagement.Components.Pages.EditServer Id="Server.ServerId">
+            </ServerManagement.Components.Pages.EditServer>
+        }
+    </li>
 }
 
 
@@ -22,12 +50,41 @@
     [Parameter]
     public Server? Server { get; set; }
 
+    [CascadingParameter(Name = "SelectedCity")]
+    public string? SelectCity { get; set; }
+
+
     private void DeleteServer(int serverId)
     {
         if (serverId > 0)
         {
             ServersRepository.DeleteServer(serverId);
             NavigationManager.NavigateTo("/servers", true);
+        }
+    }
+
+    // state variable to open the Edit Server view
+    private bool editServer = false;
+
+    // cacading value - change background color based on city selected
+    private string GetBackgroundColor()
+    {
+        if (SelectCity != null)
+        {
+            switch (SelectCity)
+            {
+                case "Toronto": return "powderblue";
+                case "Montreal": return "lightgray";
+                case "Ottawa": return "palegreen";
+                case "Calgary": return "pink";
+                case "Halifax": return "white";
+                default:
+                    return "white";
+            }
+        }
+        else
+        {
+            return "white";
         }
     }
 }
