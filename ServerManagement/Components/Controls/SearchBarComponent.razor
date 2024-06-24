@@ -18,4 +18,10 @@
     {
         ServerFilterCallback.InvokeAsync(serverFilter);
     }
+
+    // 1- clear search filter on city selection
+    public void ClearFilter()
+    {
+        this.serverFilter = string.Empty;
+    }
 }

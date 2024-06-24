@@ -33,4 +33,11 @@
     [Parameter]
     public EventCallback<string> SelectCityCallback { get; set; }
 
+
+    // Child-Child reference to Search Bar
+    public void ClearSelection()
+    {
+        this.selectedCity = string.Empty;
+    }
+
 }

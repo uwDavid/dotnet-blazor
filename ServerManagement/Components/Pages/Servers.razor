@@ -11,9 +11,9 @@
 <ServerComponent @rendermode="InteractiveServer"></ServerComponent>
 <br />
 <br />`
-<CityListComponent SelectCityCallback="HandleCitySelection"></CityListComponent>
+<CityListComponent @ref="cityListComponent" SelectCityCallback="HandleCitySelection"></CityListComponent>
 <br />
-<SearchBarComponent ServerFilterCallback="HandleSearchFilter"></SearchBarComponent>
+<SearchBarComponent @ref="searchBarComponent" ServerFilterCallback="HandleSearchFilter"></SearchBarComponent>
 <br />
 <h3>List of Servers in City:</h3>
 <ServerListComponent @rendermode="InteractiveServer" CityName="@this.selectedCity" SearchFilter="@this.searchFilter">
@@ -34,6 +34,9 @@
     {
         selectedCity = cityName;
         this.searchFilter = string.Empty; // when selecting city after search bar is used, list will render properly
+
+        // 3- trigger search bar components' ClearFilter()
+        searchBarComponent?.ClearFilter();
     }
 
     // Search Handler
@@ -48,5 +51,12 @@
         // 2 - pass in the filter from this component here
         this.searchFilter = serverFilter;
 
+        // Child-child reference - invoke ClearSelection() in Search
+        cityListComponent?.ClearSelection();
+
     }
+
+    //2- Child-Child reference
+    private CityListComponent? cityListComponent;
+    private SearchBarComponent? searchBarComponent;
 }
