@@ -21,4 +21,12 @@ Instead we use `CascadingValue` and `CascadingParameter` to cascade the paramete
 
 ## 15-template-component
 
-We add re-usability to Edit Server component, by creating a template component.
+We add re-usability to Edit Server component, by creating a template component `FieldComponent.razor`
+
+## 16-template-component-2
+
+Here we add typed template component
+Where we are able to have re-usable data element in the template as well
+We need to provide the data type for template to work
+
+We create `RepeaterComponent.razor` to replace the Server List
