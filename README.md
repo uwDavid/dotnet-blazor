@@ -23,10 +23,21 @@ Instead we use `CascadingValue` and `CascadingParameter` to cascade the paramete
 
 We add re-usability to Edit Server component, by creating a template component `FieldComponent.razor`
 
-## 16-template-component-2
+## 16-typed-template
 
 Here we add typed template component
 Where we are able to have re-usable data element in the template as well
 We need to provide the data type for template to work
 
 We create `RepeaterComponent.razor` to replace the Server List
+
+## 17-quick-grid
+
+We create a Quick Grid Demo
+To work with Quick Grid, we need to install the package.
+
+Note:
+`context` is a `Server`
+
+Note:
+QuickGrid Paginator doesn't work well

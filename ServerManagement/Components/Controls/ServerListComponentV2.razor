@@ -1,22 +1,10 @@
-<table class="table table-striped">
+<ul class="list-unstyled">
     <RepeaterComponent Items="this.servers">
-        <Header>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>City</th>
-                    <th>Status</th>
-                    <th>Online</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-        </Header>
         <Row Context="server">
             <ServerComponent Server="server"></ServerComponent>
         </Row>
     </RepeaterComponent>
-</table>
+</ul>
 
 @code {
     // component parameter -
